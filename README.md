@@ -114,7 +114,7 @@
   # Crear la imagen llamada "proyectotodo" usando el Dockerfile actual
   sudo docker build -t proyectotodo .
 
-  # Ejecutar el contenedor mapeando el puerto 8000 del contenedor al puerto 7000 del host
+  # Ejecutar el contenedor mapeando el puerto 8000 del contenedor al puerto 8000 del host
   docker run -d -p 8000:8000 --name proyectotodo proyectotodo
 
   # Listar los contenedores activos para verificar el nombre correspondiente
