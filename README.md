@@ -68,8 +68,7 @@
 <details><summary>Clonar la Aplicación y ubicarse en el directorio del proyecto</summary>
 
   ```bash
-  git clone https://github.com/<usuario>/<repo>.git
-  cd nombre_del_proyecto
+  git clone https://github.com/Gersa28/Invera-ToDo-List.git .
   ```
 </details>
 <details><summary>Instalación mediante Entorno Virtual</summary>
