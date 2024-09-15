@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <header class="bg-white">
+        <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-16 items-center justify-between mt-4"> <!-- Añadido mt-4 para separar el botón de la parte superior -->
+                <div class="flex-1 md:flex md:items-center md:gap-12">
+                    <!-- Botón Home siempre visible -->
+                    <a href="{% url 'index' %}" class="block rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:bg-gray-200">
+                        Home
+                    </a>
+                </div>
+
+                <div class="md:flex md:items-center justify-between w-full">
+                    {% if user.is_authenticated %}
+                        <!-- Nombre de usuario -->
+                        <a class="block rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:bg-gray-200 ml-4">
+                            Hola {{ user.username|upper }}
+                        </a>
+
+                        <!-- Botón de logout alineado a la derecha -->
+                        <form method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button class="rounded-lg bg-teal-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-teal-700 ml-4">
+                                Logout
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Modificación para aplicar el mismo estilo que en la plantilla hija -->
+    <main class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 mt-8">
+        {% block content %}
+        {% endblock content %}
+    </main>
+</body>
+</html>

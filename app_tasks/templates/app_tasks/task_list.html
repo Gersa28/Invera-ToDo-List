@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<!-- Contenedor principal con margen superior para separarlo del borde superior de la pantalla -->
+<div class="mt-8">
+    
+    <!-- Encabezado elegante -->
+    <div class="flex items-center justify-between pb-4 border-b border-gray-300">
+        <h1 class="text-3xl font-bold text-gray-800 tracking-tight">
+            <span class="inline-block align-middle">📋</span> Lista de Tareas
+        </h1>
+        <!-- Enlace que lleva a la página de creación de tarea -->
+        <a href="{% url 'tasks_create' %}" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            + Nueva Tarea
+        </a>
+    </div>
+    
+    <!-- Formulario de búsqueda -->
+    <form method="POST" action="{% url 'tasks_list' %}" class="mb-4 mt-8">
+        {% csrf_token %}
+        <div class="flex items-end space-x-4">
+            <!-- Campo de búsqueda por nombre o descripción -->
+            <div class="flex-1">
+                <label for="q" class="block text-sm font-medium text-gray-700">Buscar por contenido:</label>
+                <input
+                    type="text"
+                    id="q"
+                    name="q"
+                    value="{{ request.POST.q }}"
+                    class="mt-1 block w-full border border-gray-300 rounded-lg p-2"
+                    placeholder="Buscar tareas..."
+                />
+            </div>
+
+            <!-- Campo de filtro por fecha de inicio -->
+            <div class="flex-1">
+                <label for="date_from" class="block text-sm font-medium text-gray-700">Desde:</label>
+                <input
+                    type="date"
+                    id="date_from"
+                    name="date_from"
+                    value="{{ request.POST.date_from }}"
+                    class="mt-1 block w-full border border-gray-300 rounded-lg p-2"
+                />
+            </div>
+
+            <!-- Campo de filtro por fecha de fin -->
+            <div class="flex-1">
+                <label for="date_to" class="block text-sm font-medium text-gray-700">Hasta:</label>
+                <input
+                    type="date"
+                    id="date_to"
+                    name="date_to"
+                    value="{{ request.POST.date_to }}"
+                    class="mt-1 block w-full border border-gray-300 rounded-lg p-2"
+                />
+            </div>
+
+            <!-- Botón de búsqueda alineado a la derecha en la misma línea -->
+            <div>
+                <button
+                    type="submit"
+                    class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Buscar
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Tabla de tareas -->
+    <table class="min-w-full divide-y divide-gray-200 mt-8 shadow-lg rounded-lg overflow-hidden">
+        <!-- Cabecera de la tabla -->
+        <thead class="bg-blue-50">
+            <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Nombre</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Estado</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Descripción</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Creación</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Actualización</th>
+                <th scope="col" class="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Acciones</th>
+            </tr>
+        </thead>
+        
+        <!-- Cuerpo de la tabla -->
+        <tbody class="bg-white divide-y divide-gray-200">
+            {% for task in tasks %}
+            <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ task.name }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ task.status }}</td>
+                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500 break-words max-w-xs"> {{ task.description }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ task.created_at }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ task.updated_at }}</td>
+                
+                <!-- Columna para las acciones (Actualizar y Eliminar) -->
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+
+                    <!-- Botón para actualizar la tarea -->
+                    <a href="{% url 'tasks_update' task.pk %}" class="text-blue-500 hover:underline">Actualizar</a>
+                    
+                    <!-- Botón para eliminar la tarea, usando un formulario POST -->
+                    <form method="POST" action="{% url 'tasks_delete' task.pk %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button 
+                            type="submit" class="text-red-500 hover:underline ml-4" 
+                            onclick="return confirm('¿Estás seguro de que deseas eliminar esta tarea?');">
+                                Eliminar
+                        </button>
+                    </form>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock content %}
