@@ -164,7 +164,7 @@ REST_FRAMEWORK = {
 }
 
 REST_FRAMEWORK = {
-    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema", # Genera la Documentación de la API automáticamente
 }
 
 LOGGING = {
